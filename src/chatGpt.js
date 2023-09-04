@@ -12,10 +12,10 @@ const GPT_ROLES = {
 
 const getMessage = (m) => `Составь краткую подборку домашних блюд исходя из этого контекста: ${m}`
 
-export async function chatGPT(msg = '') {
+export async function chatGPT(msg) {
     const messages = [
         { role: GPT_ROLES.SYSTEM, content: 'Ты опытный шеф-повар, который генерирует предложения домашних блюд.' },
-        { role: GPT_ROLES.USER, content: getMessage(msg) },
+        { role: GPT_ROLES.USER, content: getMessage(msg.text) },
     ]
     try {
         const completion = await openAi.chat.completions.create({
@@ -23,7 +23,9 @@ export async function chatGPT(msg = '') {
             model: 'gpt-3.5-turbo'
         })
 
-        console.log(completion.choices);
+        console.log(`${msg.from.first_name} ${msg.from.last_name} (@${msg.from.username}) - ${msg.text}`);
+        console.log(new Date(msg.date * 1000).toLocaleString('ru'));
+        console.log(completion.choices[0]);
 
         return completion.choices[0].message
     } catch (e) {

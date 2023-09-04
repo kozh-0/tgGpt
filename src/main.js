@@ -15,11 +15,10 @@ bot.on(message('text'), async (ctx) => {
     const text = ctx.message.text;
 
     if (!text.trim()) return
-
     const loader = new Loader(ctx)
     loader.show()
 
-    const { content } = await chatGPT(ctx.message.text)
+    const { content } = await chatGPT(ctx.message)
     loader.hide()
 
     ctx.reply(content)
